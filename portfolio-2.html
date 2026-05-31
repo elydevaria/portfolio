@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ely Devaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --border: #334155;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #475569;
+  --accent: #64ffda;
+  --accent-dim: rgba(100,255,218,0.08);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Layout ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Left panel ── */
+.left {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px 40px 80px 0;
+}
+
+.name { font-size:30px; font-weight:600; color:var(--text); line-height:1.1; margin-bottom:6px; letter-spacing:-0.02em; }
+.title { font-size:13px; font-weight:500; color:var(--accent); margin-bottom:14px; letter-spacing:0.02em; }
+.bio { font-size:13px; color:var(--text2); line-height:1.8; margin-bottom:28px; }
+
+.nav { display:flex; flex-direction:column; gap:2px; margin-bottom:36px; }
+.nav-item {
+  display:flex; align-items:center; gap:12px;
+  padding:7px 0; font-size:11px; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--text3); text-decoration:none; cursor:pointer;
+  border:none; background:none; transition:color 0.2s;
+}
+.nav-item::before { content:''; width:24px; height:1px; background:var(--text3); transition:width 0.2s, background 0.2s; }
+.nav-item:hover, .nav-item.active { color:var(--text); }
+.nav-item:hover::before, .nav-item.active::before { width:48px; background:var(--text); }
+
+.socials { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:16px; }
+.social-link { color:var(--text3); text-decoration:none; font-size:12px; letter-spacing:0.05em; transition:color 0.2s; }
+.social-link:hover { color:var(--accent); }
+
+.cv-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:9px 16px; border:1px solid var(--accent); border-radius:4px;
+  font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--accent); text-decoration:none; transition:background 0.2s; width:fit-content;
+}
+.cv-btn:hover { background:var(--accent-dim); }
+
+/* ── Right panel ── */
+.right { flex:1; padding:80px 0 80px 60px; }
+
+.section { margin-bottom:72px; scroll-margin-top:80px; }
+.section-heading {
+  font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--text2); margin-bottom:28px; padding-bottom:10px; border-bottom:1px solid var(--border);
+}
+
+/* ── About ── */
+.about-text { font-size:14px; color:var(--text2); line-height:1.85; margin-bottom:14px; }
+.about-text strong { color:var(--text); font-weight:500; }
+
+/* ── Card flip grid ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.flip-card {
+  height: 160px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+/* Touch support */
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+@media (hover:hover) {
+  .flip-card:hover .flip-inner { transform: rotateY(180deg); }
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+  transform-style: preserve-3d;
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  padding: 20px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-front {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.flip-front-date { font-size:10px; color:var(--text2); letter-spacing:0.08em; font-weight:500; }
+.flip-front-title { font-size:15px; font-weight:500; color:var(--text); line-height:1.3; }
+.flip-front-sub { font-size:13px; color:var(--accent); font-weight:500; }
+
+.flip-back {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+.flip-back::-webkit-scrollbar { width: 3px; }
+.flip-back::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+.flip-back-text { font-size:11.5px; color:var(--text2); line-height:1.7; flex:1; }
+.flip-back-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; flex-shrink:0; }
+.flip-back-tag { font-size:9px; padding:2px 7px; background:rgba(100,255,218,0.12); color:var(--accent); border-radius:20px; font-weight:500; }
+
+/* Project cards — wider, with link */
+.project-flip { height: 200px; }
+.flip-front-link {
+  font-size:10px; color:var(--accent); letter-spacing:0.06em;
+  text-transform:uppercase; text-decoration:none; align-self:flex-start;
+}
+
+/* ── Skills ── */
+.skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.skill-group {}
+.skill-category { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text2); margin-bottom:8px; }
+.skill-items { display:flex; flex-wrap:wrap; gap:6px; }
+.skill-item { font-size:11px; padding:3px 10px; border:1px solid var(--border); border-radius:20px; color:var(--text2); }
+
+/* ── Mobile ── */
+@media (max-width:900px) {
+  .layout { flex-direction:column; padding:0 20px; }
+  .left { width:100%; position:static; height:auto; padding:48px 0 32px 0; }
+  .right { padding:0 0 60px 0; }
+  .nav { display:none; }
+  .skills-grid { grid-template-columns:1fr; }
+  .cards-grid { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:500px) {
+  .cards-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Left -->
+  <aside class="left">
+    <div>
+      <div class="name">Ely Devaria</div>
+      <div class="title">Strategy · Operations · Product</div>
+      <p class="bio">Passionate about building things that actually matter. I find a problem, obsess over it, and ship something real — from clinical tools for practitioners to lifestyle apps people use every day.</p>
+      <nav class="nav">
+        <a class="nav-item active" href="#about">About</a>
+        <a class="nav-item" href="#projects">Projects</a>
+        <a class="nav-item" href="#experience">Experience</a>
+        <a class="nav-item" href="#education">Education</a>
+        <a class="nav-item" href="#skills">Skills</a>
+      </nav>
+      <div class="socials">
+        <a class="social-link" href="https://www.linkedin.com/in/ely-devaria/" target="_blank">LinkedIn ↗</a>
+        <a class="social-link" href="https://github.com/abhinavdevaria" target="_blank">GitHub ↗</a>
+        <a class="social-link" href="mailto:elydevaria@gmail.com">Email ↗</a>
+      </div>
+      <a class="cv-btn" href="/CV_Ely_Devaria.pdf" download>↓ Download CV</a>
+    </div>
+  </aside>
+
+  <!-- Right -->
+  <main class="right">
+
+    <!-- About -->
+    <section class="section" id="about">
+      <div class="section-heading">About</div>
+      <p class="about-text">A decade at the intersection of <strong>healthcare, strategy and technology</strong> — consulting for WHO, leading operations at a mental health startup, advising global health organisations.</p>
+      <p class="about-text">Sciences Po MPP in Global Health, Émile Boutmy Scholar, Top 10%. Co-authored a <strong>WHO Europe report on telehealth</strong>. These projects are where that experience meets a new generation of AI tools.</p>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects">
+      <div class="section-heading">Projects — hover to explore</div>
+      <div class="cards-grid">
+
+        <div class="flip-card project-flip" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">Live · 500+ users</div>
+              <div class="flip-front-title">MindBase</div>
+              <div class="flip-front-sub">Clinical AI · Mental Health</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">AI research agent for French mental health practitioners — searches HAS, PubMed, Cochrane, YouTube, Instagram simultaneously and structures results into a clinical brief.</div>
+              <div>
+                <a class="flip-front-link" href="https://mindbase-seven.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px">View live ↗</a>
+                <div class="flip-back-tags">
+                  <span class="flip-back-tag">Healthtech</span>
+                  <span class="flip-back-tag">AI Agent</span>
+                  <span class="flip-back-tag">Mistral</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card project-flip" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">Personal Project</div>
+              <div class="flip-front-title">Be My Sahara</div>
+              <div class="flip-front-sub">Mental Health · Community</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Mental health and productivity platform for neurodivergent individuals — appointments, goal management, and community support in one place.</div>
+              <div>
+                <a class="flip-front-link" href="https://bemysahara.lovable.app" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px">View live ↗</a>
+                <div class="flip-back-tags">
+                  <span class="flip-back-tag">Mental Health</span>
+                  <span class="flip-back-tag">ADHD</span>
+                  <span class="flip-back-tag">Community</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card project-flip" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">Personal Project</div>
+              <div class="flip-front-title">Oulala Vegan</div>
+              <div class="flip-front-sub">AI Lifestyle · PWA</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Scan barcodes, find vegan restaurants, discover cruelty-free cosmetics, and get AI-powered recommendations for your lifestyle.</div>
+              <div>
+                <a class="flip-front-link" href="https://oulalavegan.com" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px">View live ↗</a>
+                <div class="flip-back-tags">
+                  <span class="flip-back-tag">AI Recs</span>
+                  <span class="flip-back-tag">Barcode</span>
+                  <span class="flip-back-tag">PWA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="section" id="experience">
+      <div class="section-heading">Experience — hover to explore</div>
+      <div class="cards-grid">
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2023 — Present</div>
+              <div class="flip-front-title">Strategy & Ops Manager</div>
+              <div class="flip-front-sub">Avipsy · Paris</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Led €800k fundraising round. National insurer partnership. KPI systems for patient growth. 7+ days/month saved via automation.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">Fundraising</span>
+                <span class="flip-back-tag">Partnerships</span>
+                <span class="flip-back-tag">Automation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2021 — 2023</div>
+              <div class="flip-front-title">Freelance Consultant</div>
+              <div class="flip-front-sub">Global Health · Paris</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Co-authored a WHO Europe telehealth report. Advised international health organisations. Health newsletter reaching 1,000+ decision-makers.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">WHO</span>
+                <span class="flip-back-tag">Telehealth</span>
+                <span class="flip-back-tag">Advisory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2020 — 2021</div>
+              <div class="flip-front-title">Digital Health Consultant</div>
+              <div class="flip-front-sub">George Institute · New Delhi</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Built a digital health incubator. UNICEF hackathon. Analysed digital interventions across 11 SE Asian countries for WHO during COVID-19.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">UNICEF</span>
+                <span class="flip-back-tag">Incubator</span>
+                <span class="flip-back-tag">WHO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2017 — 2020</div>
+              <div class="flip-front-title">Sr. Associate Manager — CEO's Office</div>
+              <div class="flip-front-sub">NephroPlus · Hyderabad, India</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">200+ expansion projects. $45M Series D. $15M acquisition integration. Dashboards for 200 centres.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">Series D</span>
+                <span class="flip-back-tag">M&A</span>
+                <span class="flip-back-tag">Modelling</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2015 — 2017</div>
+              <div class="flip-front-title">Business Analyst</div>
+              <div class="flip-front-sub">ZS Associates · Pune</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Market due diligence for Fortune 500 pharma clients across US, Europe and Japan. Go-to-market and pricing strategy.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">Consulting</span>
+                <span class="flip-back-tag">Pharma</span>
+                <span class="flip-back-tag">Strategy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="section" id="education">
+      <div class="section-heading">Education — hover to explore</div>
+      <div class="cards-grid">
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2021 — 2023</div>
+              <div class="flip-front-title">MPP — Global Health</div>
+              <div class="flip-front-sub">Sciences Po · Paris</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Master in Public Policy — Global Health track. Émile Boutmy Scholar. Graduated Cum Laude, Top 10%.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">Scholarship</span>
+                <span class="flip-back-tag">Cum Laude</span>
+                <span class="flip-back-tag">Top 10%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="flip-front-date">2011 — 2015</div>
+              <div class="flip-front-title">B.Tech, Civil Engineering</div>
+              <div class="flip-front-sub">VIT University · India</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-text">Bachelor of Technology in Civil Engineering from VIT University, Vellore.</div>
+              <div class="flip-back-tags">
+                <span class="flip-back-tag">Engineering</span>
+                <span class="flip-back-tag">India</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section" id="skills">
+      <div class="section-heading">Skills & Tools</div>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-category">Strategy & Finance</div>
+          <div class="skill-items">
+            <span class="skill-item">Financial modelling</span>
+            <span class="skill-item">Fundraising</span>
+            <span class="skill-item">Investor relations</span>
+            <span class="skill-item">Due diligence</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-category">Operations</div>
+          <div class="skill-items">
+            <span class="skill-item">KPI dashboards</span>
+            <span class="skill-item">Process automation</span>
+            <span class="skill-item">Excel · Sheets</span>
+            <span class="skill-item">Jira</span>
+            <span class="skill-item">HubSpot</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-category">Product Building</div>
+          <div class="skill-items">
+            <span class="skill-item">Claude</span>
+            <span class="skill-item">Lovable</span>
+            <span class="skill-item">Vercel</span>
+            <span class="skill-item">Supabase</span>
+            <span class="skill-item">Cursor</span>
+            <span class="skill-item">Python</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-category">Languages</div>
+          <div class="skill-items">
+            <span class="skill-item">English — bilingual</span>
+            <span class="skill-item">French — fluent</span>
+            <span class="skill-item">Hindi — native</span>
+            <span class="skill-item">Gujarati</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Active nav on scroll
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const active = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  navItems.forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(item.getAttribute('href'))?.scrollIntoView({ behavior:'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
