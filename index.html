@@ -19,6 +19,53 @@ html { scroll-behavior:smooth; }
   --accent: #64ffda;
   --accent-dim: rgba(100,255,218,0.08);
 }
+body.light {
+  --bg: #f8fafc;
+  --surface: #f1f5f9;
+  --border: #cbd5e1;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --accent: #0891b2;
+  --accent-dim: rgba(8,145,178,0.08);
+}
+.controls {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+.ctrl-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ctrl-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+[data-lang] { display: none; }
+[data-lang="en"] { display: block; }
+span[data-lang] { display: none; }
+span[data-lang="en"] { display: inline; }
+
+body.light {
+  --bg: #f8fafc;
+  --surface: #f1f5f9;
+  --border: #cbd5e1;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --accent: #0891b2;
+  --accent-dim: rgba(8,145,178,0.08);
+}
 
 body {
   background: var(--bg);
@@ -180,6 +227,33 @@ body {
 .skill-items { display:flex; flex-wrap:wrap; gap:6px; }
 .skill-item { font-size:11px; padding:3px 10px; border:1px solid var(--border); border-radius:20px; color:var(--text2); }
 
+/* ── Controls ── */
+.controls {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+.ctrl-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.ctrl-btn:hover, .ctrl-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ── Mobile ── */
 @media (max-width:900px) {
   .layout { flex-direction:column; padding:0 20px; }
@@ -195,6 +269,17 @@ body {
 </style>
 </head>
 <body>
+<div class="controls">
+  <button class="ctrl-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 FR</button>
+  <button class="ctrl-btn" id="theme-btn" onclick="toggleTheme()">☀️ Light</button>
+</div>
+
+<div class="controls">
+  <button class="ctrl-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="ctrl-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
+  <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️</button>
+</div>
+
 <div class="layout">
 
   <!-- Left -->
@@ -205,20 +290,23 @@ body {
       </div>
       <div class="name">Ely Devaria</div>
       <div class="title">Strategy · Operations · Product</div>
-      <p class="bio">Passionate about building things that actually matter. I find a problem, obsess over it, and ship something real — from clinical tools for practitioners to lifestyle apps people use every day.</p>
+      <p class="bio">
+  <span data-lang="en">Passionate about building things that actually matter. I find a problem, obsess over it, and ship something real — from clinical tools for practitioners to lifestyle apps people use every day.</span>
+  <span data-lang="fr">Passionné par la création de choses qui ont un vrai impact. Je trouve un problème, j'y réfléchis jusqu'à l'obsession, et je livre quelque chose de concret — des outils cliniques aux applications du quotidien.</span>
+</p>
       <nav class="nav">
-        <a class="nav-item active" href="#about">About</a>
-        <a class="nav-item" href="#projects">Projects</a>
-        <a class="nav-item" href="#experience">Experience</a>
-        <a class="nav-item" href="#education">Education</a>
-        <a class="nav-item" href="#skills">Skills</a>
+        <a class="nav-item active" href="#about"><span data-lang="en">About</span><span data-lang="fr">À propos</span></a>
+        <a class="nav-item" href="#projects"><span data-lang="en">Projects</span><span data-lang="fr">Projets</span></a>
+        <a class="nav-item" href="#experience"><span data-lang="en">Experience</span><span data-lang="fr">Expérience</span></a>
+        <a class="nav-item" href="#education"><span data-lang="en">Education</span><span data-lang="fr">Formation</span></a>
+        <a class="nav-item" href="#skills"><span data-lang="en">Skills</span><span data-lang="fr">Compétences</span></a>
       </nav>
       <div class="socials">
         <a class="social-link" href="https://www.linkedin.com/in/ely-devaria/" target="_blank">LinkedIn ↗</a>
         <a class="social-link" href="https://github.com/elydevaria" target="_blank">GitHub ↗</a>
         <a class="social-link" href="mailto:elydevaria@gmail.com">Email ↗</a>
       </div>
-      <a class="cv-btn" href="/CV_Ely_Devaria.pdf" download>↓ Download CV</a>
+      <a class="cv-btn" href="/CV_Ely_Devaria.pdf" download><span data-lang="en">↓ Download CV</span><span data-lang="fr">↓ Télécharger CV</span></a>
     </div>
   </aside>
 
@@ -227,27 +315,36 @@ body {
 
     <!-- About -->
     <section class="section" id="about">
-      <div class="section-heading">About</div>
-      <p class="about-text">A decade at the intersection of <strong>healthcare, strategy and technology</strong> — consulting for WHO, leading operations at a mental health startup, advising global health organisations.</p>
-      <p class="about-text">Sciences Po MPP in Global Health, Émile Boutmy Scholar, Top 10%. Co-authored a <strong>WHO Europe report on telehealth</strong>. These projects are where that experience meets a new generation of AI tools.</p>
+      <div class="section-heading">
+        <span data-lang="en">About</span>
+        <span data-lang="fr">À propos</span>
+      </div>
+      <p class="about-text">
+        <span data-lang="en">A decade at the intersection of <strong>healthcare, strategy and technology</strong> — consulting for WHO, leading operations at a mental health startup, advising global health organisations.</span>
+        <span data-lang="fr">Une décennie à l'intersection de la <strong>santé, de la stratégie et de la technologie</strong> — conseil pour l'OMS, direction des opérations d'une startup en santé mentale, accompagnement d'organisations de santé mondiales.</span>
+      </p>
+      <p class="about-text">
+        <span data-lang="en">Sciences Po MPP in Global Health, Émile Boutmy Scholar, Top 10%. Co-authored a <strong>WHO Europe report on telehealth</strong>. These projects are where that experience meets a new generation of AI tools.</span>
+        <span data-lang="fr">Master en Politiques Publiques à Sciences Po, Boursier Émile Boutmy, Top 10%. Co-auteur d'un <strong>rapport OMS Europe sur la télésanté</strong>. Ces projets sont là où cette expérience rencontre une nouvelle génération d'outils IA.</span>
+      </p>
     </section>
 
     <!-- Projects -->
     <section class="section" id="projects">
-      <div class="section-heading">Projects — hover to explore</div>
+      <div class="section-heading"><span data-lang="en">Projects — hover to explore</span><span data-lang="fr">Projets — survoler pour explorer</span></div>
       <div class="cards-grid">
 
         <div class="flip-card project-flip" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <div class="flip-front-date">Live · 500+ users</div>
+              <div class="flip-front-date"><span data-lang="en">Live · 500+ users</span><span data-lang="fr">En ligne · 500+ utilisateurs</span></div>
               <div class="flip-front-title">MindBase</div>
               <div class="flip-front-sub">Clinical AI · Mental Health</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">AI research agent for French mental health practitioners — searches HAS, PubMed, Cochrane, YouTube, Instagram simultaneously and structures results into a clinical brief.</div>
+              <div class="flip-back-text"><span data-lang="en">AI research agent for French mental health practitioners — searches HAS, PubMed, Cochrane, YouTube, Instagram simultaneously and structures results into a clinical brief.</span><span data-lang="fr">Agent de recherche IA pour les praticiens en santé mentale français — recherche simultanément HAS, PubMed, Cochrane, YouTube, Instagram et structure les résultats en une synthèse clinique.</span></div>
               <div>
-                <a class="flip-front-link" href="https://mindbase-seven.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px">View live ↗</a>
+                <a class="flip-front-link" href="https://mindbase-seven.vercel.app" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px"><span data-lang="en">View live ↗</span><span data-lang="fr">Voir le site ↗</span></a>
                 <div class="flip-back-tags">
                   <span class="flip-back-tag">Healthtech</span>
                   <span class="flip-back-tag">AI Agent</span>
@@ -261,14 +358,14 @@ body {
         <div class="flip-card project-flip" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <div class="flip-front-date">Personal Project</div>
+              <div class="flip-front-date"><span data-lang="en">Personal Project</span><span data-lang="fr">Projet Personnel</span></div>
               <div class="flip-front-title">Be My Sahara</div>
               <div class="flip-front-sub">Mental Health · Community</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Mental health and productivity platform for neurodivergent individuals — appointments, goal management, and community support in one place.</div>
+              <div class="flip-back-text"><span data-lang="en">Mental health and productivity platform for neurodivergent individuals — appointments, goal management, and community support in one place.</span><span data-lang="fr">Plateforme de santé mentale et de productivité pour les personnes neuroatypiques — prise de rendez-vous, gestion des objectifs et soutien communautaire en un seul endroit.</span></div>
               <div>
-                <a class="flip-front-link" href="https://bemysahara.lovable.app" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px">View live ↗</a>
+                <a class="flip-front-link" href="https://bemysahara.lovable.app" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px"><span data-lang="en">View live ↗</span><span data-lang="fr">Voir le site ↗</span></a>
                 <div class="flip-back-tags">
                   <span class="flip-back-tag">Mental Health</span>
                   <span class="flip-back-tag">ADHD</span>
@@ -282,14 +379,14 @@ body {
         <div class="flip-card project-flip" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <div class="flip-front-date">Personal Project</div>
+              <div class="flip-front-date"><span data-lang="en">Personal Project</span><span data-lang="fr">Projet Personnel</span></div>
               <div class="flip-front-title">Oulala Vegan</div>
               <div class="flip-front-sub">AI Lifestyle · PWA</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Scan barcodes, find vegan restaurants, discover cruelty-free cosmetics, and get AI-powered recommendations for your lifestyle.</div>
+              <div class="flip-back-text"><span data-lang="en">Scan barcodes, find vegan restaurants, discover cruelty-free cosmetics, and get AI-powered recommendations for your lifestyle.</span><span data-lang="fr">Scannez des codes-barres, trouvez des restaurants vegan, découvrez des cosmétiques cruelty-free et obtenez des recommandations IA personnalisées.</span></div>
               <div>
-                <a class="flip-front-link" href="https://oulalavegan.com" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px">View live ↗</a>
+                <a class="flip-front-link" href="https://oulalavegan.com" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-bottom:8px"><span data-lang="en">View live ↗</span><span data-lang="fr">Voir le site ↗</span></a>
                 <div class="flip-back-tags">
                   <span class="flip-back-tag">AI Recs</span>
                   <span class="flip-back-tag">Barcode</span>
@@ -305,7 +402,7 @@ body {
 
     <!-- Experience -->
     <section class="section" id="experience">
-      <div class="section-heading">Experience — hover to explore</div>
+      <div class="section-heading"><span data-lang="en">Experience — hover to explore</span><span data-lang="fr">Expérience — survoler pour explorer</span></div>
       <div class="cards-grid">
 
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
@@ -316,7 +413,7 @@ body {
               <div class="flip-front-sub">Avipsy · Paris</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Led €800k fundraising round. National insurer partnership. KPI systems for patient growth. 7+ days/month saved via automation.</div>
+              <div class="flip-back-text"><span data-lang="en">Led €800k fundraising round. National insurer partnership. KPI systems for patient growth. 7+ days/month saved via automation.</span><span data-lang="fr">Levée de fonds de 800k€. Partenariat avec un assureur national. Systèmes KPI pour la croissance patient. 7+ jours/mois économisés grâce à l'automatisation.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">Fundraising</span>
                 <span class="flip-back-tag">Partnerships</span>
@@ -334,7 +431,7 @@ body {
               <div class="flip-front-sub">Global Health · Paris</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Co-authored a WHO Europe telehealth report. Advised international health organisations. Health newsletter reaching 1,000+ decision-makers.</div>
+              <div class="flip-back-text"><span data-lang="en">Co-authored a WHO Europe telehealth report. Advised international health organisations. Health newsletter reaching 1,000+ decision-makers.</span><span data-lang="fr">Co-auteur d'un rapport OMS Europe sur la télésanté. Conseil à des organisations de santé internationales. Newsletter santé atteignant 1 000+ décideurs.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">WHO</span>
                 <span class="flip-back-tag">Telehealth</span>
@@ -352,7 +449,7 @@ body {
               <div class="flip-front-sub">George Institute · New Delhi</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Built a digital health incubator. UNICEF hackathon. Analysed digital interventions across 11 SE Asian countries for WHO during COVID-19.</div>
+              <div class="flip-back-text"><span data-lang="en">Built a digital health incubator. UNICEF hackathon. Analysed digital interventions across 11 SE Asian countries for WHO during COVID-19.</span><span data-lang="fr">Création d'un incubateur en santé numérique. Hackathon UNICEF. Analyse des interventions numériques dans 11 pays d'Asie du Sud-Est pour l'OMS pendant le COVID-19.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">UNICEF</span>
                 <span class="flip-back-tag">Incubator</span>
@@ -370,7 +467,7 @@ body {
               <div class="flip-front-sub">NephroPlus · Hyderabad, India</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">200+ expansion projects. $45M Series D. $15M acquisition integration. Dashboards for 200 centres.</div>
+              <div class="flip-back-text"><span data-lang="en">200+ expansion projects. $45M Series D. $15M acquisition integration. Dashboards for 200 centres.</span><span data-lang="fr">200+ projets d'expansion. Série D de 45M$. Intégration d'acquisition de 15M$. Tableaux de bord pour 200 centres.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">Series D</span>
                 <span class="flip-back-tag">M&A</span>
@@ -388,7 +485,7 @@ body {
               <div class="flip-front-sub">ZS Associates · Pune</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Market due diligence for Fortune 500 pharma clients across US, Europe and Japan. Go-to-market and pricing strategy.</div>
+              <div class="flip-back-text"><span data-lang="en">Market due diligence for Fortune 500 pharma clients across US, Europe and Japan. Go-to-market and pricing strategy.</span><span data-lang="fr">Due diligence marché pour des clients pharma Fortune 500 aux États-Unis, en Europe et au Japon. Stratégie go-to-market et pricing.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">Consulting</span>
                 <span class="flip-back-tag">Pharma</span>
@@ -403,7 +500,7 @@ body {
 
     <!-- Education -->
     <section class="section" id="education">
-      <div class="section-heading">Education — hover to explore</div>
+      <div class="section-heading"><span data-lang="en">Education — hover to explore</span><span data-lang="fr">Formation — survoler pour explorer</span></div>
       <div class="cards-grid">
 
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
@@ -414,7 +511,7 @@ body {
               <div class="flip-front-sub">Sciences Po · Paris</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Master in Public Policy — Global Health track. Émile Boutmy Scholar. Graduated Cum Laude, Top 10%.</div>
+              <div class="flip-back-text"><span data-lang="en">Master in Public Policy — Global Health track. Émile Boutmy Scholar. Graduated Cum Laude, Top 10%.</span><span data-lang="fr">Master en Politiques Publiques — parcours Santé Mondiale. Boursier Émile Boutmy. Diplômé Cum Laude, Top 10%.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">Scholarship</span>
                 <span class="flip-back-tag">Cum Laude</span>
@@ -432,7 +529,7 @@ body {
               <div class="flip-front-sub">VIT University · India</div>
             </div>
             <div class="flip-back">
-              <div class="flip-back-text">Bachelor of Technology in Civil Engineering from VIT University, Vellore.</div>
+              <div class="flip-back-text"><span data-lang="en">Bachelor of Technology in Civil Engineering from VIT University, Vellore.</span><span data-lang="fr">Bachelor of Technology en Génie Civil, VIT University, Vellore, Inde.</span></div>
               <div class="flip-back-tags">
                 <span class="flip-back-tag">Engineering</span>
                 <span class="flip-back-tag">India</span>
@@ -446,7 +543,7 @@ body {
 
     <!-- Skills -->
     <section class="section" id="skills">
-      <div class="section-heading">Skills & Tools</div>
+      <div class="section-heading"><span data-lang="en">Skills & Tools</span><span data-lang="fr">Compétences & Outils</span></div>
       <div class="skills-grid">
         <div class="skill-group">
           <div class="skill-category">Strategy & Finance</div>
@@ -516,5 +613,23 @@ body {
   });
 </script>
 
+<script>
+function setLang(lang) {
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    el.style.display = 'none';
+  });
+  document.querySelectorAll('[data-lang="' + lang + '"]').forEach(el => {
+    el.style.display = el.tagName === 'SPAN' ? 'inline' : 'block';
+  });
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const btn = document.getElementById('btn-theme');
+  btn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+</script>
 </body>
 </html>
