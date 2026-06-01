@@ -275,16 +275,15 @@ body {
 </head>
 <body>
 <div class="controls">
-  <button class="ctrl-btn" id="lang-btn" onclick="toggleLang()">🇫🇷 FR</button>
-  <button class="ctrl-btn" id="theme-btn" onclick="toggleTheme()">☀️ Light</button>
+  <button class="ctrl-btn active" id="btn-en" onclick="setLang('en')">🇬🇧&nbsp;&nbsp;EN</button>
+  <button class="ctrl-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷&nbsp;&nbsp;FR</button>
+  <div class="ctrl-divider"></div>
+  <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️&nbsp;&nbsp;Light</button>
+</div>
+  <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️&nbsp;&nbsp;Light</button>
 </div>
 
-<div class="controls">
-  <button class="ctrl-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-  <button class="ctrl-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
-  <div class="ctrl-divider"></div>
-  <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️</button>
-</div>
+
 
 <div class="layout">
 
@@ -642,7 +641,7 @@ function setLang(lang) {
 function toggleTheme() {
   document.body.classList.toggle('light');
   const btn = document.getElementById('btn-theme');
-  btn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  btn.innerHTML = document.body.classList.contains('light') ? '🌙&nbsp;&nbsp;Dark' : '☀️&nbsp;&nbsp;Light';
 }
 </script>
 </body>
