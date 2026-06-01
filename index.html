@@ -36,21 +36,26 @@ body.light {
   display: flex;
   gap: 8px;
   z-index: 100;
+  align-items: center;
 }
 .ctrl-btn {
-  padding: 6px 12px;
+  padding: 7px 16px;
   border: 1px solid var(--border);
   border-radius: 20px;
-  background: var(--surface);
+  background: var(--bg);
   color: var(--text2);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
+  white-space: nowrap;
+  min-width: 48px;
+  text-align: center;
 }
 .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
 .ctrl-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.ctrl-divider { width: 1px; height: 20px; background: var(--border); }
 [data-lang] { display: none; }
 [data-lang="en"] { display: block; }
 span[data-lang] { display: none; }
@@ -277,6 +282,7 @@ body {
 <div class="controls">
   <button class="ctrl-btn active" id="btn-en" onclick="setLang('en')">EN</button>
   <button class="ctrl-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
+  <div class="ctrl-divider"></div>
   <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️</button>
 </div>
 
@@ -306,7 +312,9 @@ body {
         <a class="social-link" href="https://github.com/elydevaria" target="_blank">GitHub ↗</a>
         <a class="social-link" href="mailto:elydevaria@gmail.com">Email ↗</a>
       </div>
-      <a class="cv-btn" href="/CV_Ely_Devaria.pdf" download><span data-lang="en">↓ Download CV</span><span data-lang="fr">↓ Télécharger CV</span></a>
+      <a class="cv-btn" id="cv-download-btn" href="/CV_Ely_Devaria_-_English.pdf" download>
+  <span data-lang="en">↓ Download CV</span><span data-lang="fr">↓ Télécharger CV</span>
+</a>
     </div>
   </aside>
 
@@ -623,6 +631,12 @@ function setLang(lang) {
   });
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  // Switch CV download link based on language
+  const cvBtn = document.getElementById('cv-download-btn');
+  if (cvBtn) {
+    cvBtn.href = lang === 'fr' ? '/CV_Ely_Devaria_finale.pdf' : '/CV_Ely_Devaria_-_English.pdf';
+    cvBtn.download = lang === 'fr' ? 'CV_Ely_Devaria_finale.pdf' : 'CV_Ely_Devaria_-_English.pdf';
+  }
 }
 
 function toggleTheme() {
