@@ -233,32 +233,6 @@ body {
 .skill-item { font-size:11px; padding:3px 10px; border:1px solid var(--border); border-radius:20px; color:var(--text2); }
 
 /* ── Controls ── */
-.controls {
-  position: fixed;
-  top: 20px;
-  right: 24px;
-  display: flex;
-  gap: 8px;
-  z-index: 100;
-}
-.ctrl-btn {
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--surface);
-  color: var(--text2);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-}
-.ctrl-btn:hover, .ctrl-btn.active {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 /* ── Mobile ── */
 @media (max-width:900px) {
   .layout { flex-direction:column; padding:0 20px; }
@@ -278,8 +252,6 @@ body {
   <button class="ctrl-btn active" id="btn-en" onclick="setLang('en')">🇬🇧&nbsp;&nbsp;EN</button>
   <button class="ctrl-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷&nbsp;&nbsp;FR</button>
   <div class="ctrl-divider"></div>
-  <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️&nbsp;&nbsp;Light</button>
-</div>
   <button class="ctrl-btn" id="btn-theme" onclick="toggleTheme()">☀️&nbsp;&nbsp;Light</button>
 </div>
 
